@@ -2,18 +2,15 @@
 
 This document must be updated daily by EACH group member.
 
-## Player 1
+## Patrick Was
 
-### 2024-01-02 - Brief description
+### 2024-01-06 - Basic files, skeleton
+
+**~35 minutes:** Editing README.md, DEVLOG.md, and PROPOSAL.md.
+
+**minutes:** Adding skeleton and various other C files. 
+
+### 2024-01-07 - Brief description
 Expanded description including how much time was spent on task.
 
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
-
-## Player 2
-
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
-
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-08 - text

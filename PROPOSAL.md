@@ -2,11 +2,13 @@
 
 ## Group Members:
 
-names here.
+Patrick Was
        
 # Intentions:
 
-A statement of the problem you are solving and/or a high level description of the project.
+Introducing, Bridge: a card game that might require a few re-explanations to understand. Introduced to me by a fellow math team student on the way to PClassic, 
+
+This project is meant to reinforce using pipes (perhaps sockets, if time allows; would require some changing and reorganizing) for multiplayer/LAN gaming through a card game. It will use semaphores and shared memory so that players have to wait for their turn and to update card values. 
     
 # Intended usage:
 

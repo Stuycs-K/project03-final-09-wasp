@@ -1,13 +1,13 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Vh67aNdh)
-# PROJECT NAME HERE
+# Bridging Connections
 
-### GROUP NAME HERE
+### Hive Mind
 
-Group Members Here
+Patrick Was
        
 ### Project Description:
 
-Explain what is this project.
+Introducing, Bridge: a card game that might require a few re-explanations to understand. Introduced to me by a fellow math team student on the way to PClassic, I decided it would be a brilliant idea to code a game with a million conditions in C, applying the knowledge we've learned in the semester of this class.  
   
 ### Instructions:
 
