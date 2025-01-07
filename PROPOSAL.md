@@ -18,12 +18,17 @@ There will also be an additional display if a bid is made so that everyone can s
 
 Semaphores: Waiting for turn; nothing can be typed or processed on player's side while it is another player's turn (though they can quit with CTRL-C; perhaps also just makeit so that if they print "quit" they can quit, but anything else is replaced with "you cannot type right now").
 
-(one of) sockets/pipes: Communication with different computers/same computer for the multiplayer experience. 
+(one of) Sockets/pipes: Communication with different computers/same computer for the multiplayer experience.
+
+Allocating memory: Used in various ways, not really sure how specifically yet but it will definitely occur. 
+
+Shared memory: Card statuses, etc.
+
+Signals: Used to quit the game (especially considering that we are using semaphores).
 
 # Intended pacing:
 
 **January 8th:** Get queue running. Perhaps, if time remains, get card randomization as well. 
-**January 10th:** Update technical details accordingly, after more solidified plans have been made. 
 **January 18th:** Get play testers (other than having play tested it myself earlier) to catch any bugs, rectify performance, etc. 
 
 **IFF TIME REMAINS:** Make a 1v1 version, perhaps making it so that one person gets two hands. 
