@@ -10,7 +10,8 @@ This document must be updated daily by EACH group member.
 
 **minutes:** Added skeleton (bridge.h file), though this might greatly be modified.  
 
-### 2024-01-07 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-07 - Rules, 
+
+**40 minutes:** Clarifying rules of the game, writing them in the README.md. 
 
 ### 2024-01-08 - text
