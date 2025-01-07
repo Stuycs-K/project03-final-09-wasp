@@ -16,7 +16,7 @@ There will also be an additional display if a bid is made so that everyone can s
 
 # Technical Details:
 
-Semaphores: Waiting for turn; nothing can be typed or processed on player's side while it is another player's turn (though they can quit with CTRL-C; perhaps also just makeit so that if they print "quit" they can quit, but anything else is replaced with "you cannot type right now").
+Semaphores: Waiting for turn; nothing can be typed or processed on player's side while it is another player's turn (though they can quit with CTRL-C; perhaps also just makeit so that if they print "quit" they can quit, but anything else is replaced with "you cannot type right now"). Also, one the room is full, no one else can join.
 
 (one of) Sockets/pipes: Communication with different computers/same computer for the multiplayer experience.
 

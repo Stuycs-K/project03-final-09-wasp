@@ -16,6 +16,8 @@ Introducing, Bridge: a 2v2 card game that might require a few playthroughs to fu
 - *Trick*: A round where each player takes turns placing a card on the table, and the card with the highest value (determined by rules of the game) wins.
 - *Trump* (or *trump card*): A card or suit (most typically suit) that ranks the highest in a game (see metaphor: I've just played my trump card). 
 - *Call*: Either a pass, bid, double, or redouble. 
+- *Declarer*: Player of the pair who first mentions the suit or notrump that becomes the final contract.
+- *Dummy*: 
 
 **How to Play:** The suits in order of progression are alphabetical: clubs, diamonds, hearts, spades. The card rankings are: 1,2,...,10, jack, king, queen, ace. For simplicity's sake, the teams will be randomized. 
 
