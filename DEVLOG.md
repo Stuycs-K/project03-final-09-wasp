@@ -14,4 +14,10 @@ This document must be updated daily by EACH group member.
 
 **40 minutes:** Clarifying rules of the game, writing them in the README.md. 
 
-### 2024-01-08 -
+### 2024-01-08 - Added files, changes to bridge.c and bridge.h
+
+### 2024-01-09 - 
+
+### 2024-01-10 - 
+
+### 2024-01-11 -
