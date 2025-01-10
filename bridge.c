@@ -29,6 +29,8 @@ int playerRandomization(){
   short sem_flag;
 };*/ // I don't need this since it's defined on mac already globally, but maybe put this back for linux machines or something... I'm no expert
 
+// make sure the error messages are more serious
+
 int main(int argc, char* argv[]){
   if(strcmp(argv[1], "create") == 0){
     createStory();
