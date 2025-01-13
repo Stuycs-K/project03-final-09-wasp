@@ -1,5 +1,123 @@
 #include "bridge.h"
 
+// We will store a semaphore in shared memory so that
+// it can be accessed by parent and children processes.
+/*typedef struct {
+    sem_t start_sem;   // Semaphore to signal that game can start
+} shared_data_t;
+
+int main(void)
+{
+    int i;
+    int pipes[NUM_PLAYERS][2]; // Each child will write to parent through its own pipe
+    pid_t pids[NUM_PLAYERS];
+
+    // Create shared memory for semaphore
+    shared_data_t *shared_data = mmap(NULL, sizeof(shared_data_t),
+                                      PROT_READ | PROT_WRITE,
+                                      MAP_SHARED | MAP_ANONYMOUS,
+                                      -1, 0);
+    if (shared_data == MAP_FAILED) {
+        perror("mmap");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialize the semaphore in shared memory
+    // pshared=1 means this semaphore is shared between processes
+    if (sem_init(&(shared_data->start_sem), 1, 0) != 0) {
+        perror("sem_init");
+        exit(EXIT_FAILURE);
+    }
+
+    // Create pipes for each player
+    for (i = 0; i < NUM_PLAYERS; i++) {
+        if (pipe(pipes[i]) == -1) {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Fork child processes (players)
+    for (i = 0; i < NUM_PLAYERS; i++) {
+        pids[i] = fork();
+        if (pids[i] < 0) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        else if (pids[i] == 0) {
+            // Child process (player i)
+
+            // Close the read end; child only writes to the pipe
+            close(pipes[i][0]);
+
+            // Simulate "joining" the game by sending a message to the parent
+            // The content of the message is not very important; just sending a byte.
+            char msg = 'R';  // "Ready"
+            if (write(pipes[i][1], &msg, 1) == -1) {
+                perror("write");
+                exit(EXIT_FAILURE);
+            }
+            close(pipes[i][1]);
+
+            // Now wait until the parent signals that all 4 players have joined
+            sem_wait(&(shared_data->start_sem));
+
+            // Once unblocked, all players have joined
+            printf("Player %d: Starting the game!\n", i);
+            fflush(stdout);
+
+            // Child is done, exit
+            exit(EXIT_SUCCESS);
+        }
+        else {
+            // Parent continues the loop creating more children
+        }
+    }
+
+    // Parent process:
+    // Close all the write-ends in the parent, since parent only reads from these pipes
+    for (i = 0; i < NUM_PLAYERS; i++) {
+        close(pipes[i][1]);
+    }
+
+    int playersJoined = 0;
+
+    // Read a "ready" byte from each child to confirm they have joined
+    // as they come in. Each read corresponds to one player joined.
+    for (i = 0; i < NUM_PLAYERS; i++) {
+        char msg;
+        if (read(pipes[i][0], &msg, 1) == -1) {
+            perror("read");
+            exit(EXIT_FAILURE);
+        }
+        close(pipes[i][0]);  // Close this pipe after reading
+
+        playersJoined++;
+        int playersLeft = NUM_PLAYERS - playersJoined;
+        printf("[Parent] Player %d joined. Players left to join: %d\n", i, playersLeft);
+        fflush(stdout);
+    }
+
+    // All 4 players have joined at this point
+    // Let each child proceed by posting (incrementing) the semaphore 4 times
+    for (i = 0; i < NUM_PLAYERS; i++) {
+        sem_post(&(shared_data->start_sem));
+    }
+
+    // Wait for all children to finish
+    for (i = 0; i < NUM_PLAYERS; i++) {
+        wait(NULL);
+    }
+
+    // Cleanup
+    sem_destroy(&(shared_data->start_sem));
+    munmap(shared_data, sizeof(shared_data_t));
+
+    printf("[Parent] All players have started the game. Exiting.\n");
+    return 0;
+}*/
+
+
 int game(){
   return 0;
 }
@@ -11,10 +129,6 @@ int jQueue(){
 int playerRandomization(){
   return 0;
 }
-
-
-#define SEMKEY 637691
-#define SHAREDKEY 653237
 
 /*union semun {
   int val;                  //used for SETVAL
@@ -31,7 +145,7 @@ int playerRandomization(){
 
 // make sure the error messages are more serious
 
-int main(int argc, char* argv[]){
+/*int main(int argc, char* argv[]){
   if(strcmp(argv[1], "create") == 0){
     createStory();
   }
@@ -272,6 +386,6 @@ int main() {
     }
 
     return 0;
-}
+}*/
 
 
