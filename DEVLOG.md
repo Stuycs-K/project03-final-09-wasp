@@ -10,9 +10,9 @@ This document must be updated daily by EACH group member.
 
 **30 minutes:** Added skeleton (bridge.h file), though this might greatly be modified. More .h files and certainly more functions will need to be created. 
 
-### 2024-01-07 - Rules, 
+### 2024-01-07 - Rules, FLOWCHART.md, editing README.md and DEVLOG.md.
 
-**40 minutes:** Clarifying rules of the game, writing them in the README.md. 
+**40 minutes:** Clarifying rules of the game, appending them in the README.md. Created a FLOWCHART.md to help with organization and to get a more specific flow of the game than would be offered in either the PROPOSAL or README (for personal use). 
 
 ### 2024-01-08 - Added files, changes to bridge.c and bridge.h
 
