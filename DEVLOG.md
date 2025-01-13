@@ -16,8 +16,14 @@ This document must be updated daily by EACH group member.
 
 ### 2024-01-08 - Added files, changes to bridge.c and bridge.h
 
-### 2024-01-09 - 
+**40 minutes:** bridge.c and bridge.h skeleton structure changed to include more functions. Also, added more <.h> files relating to the project, and fixed bugs (ex. having stdin.h instead of stdio.h). 
 
-### 2024-01-10 - 
+### 2024-01-09 - Working on PLAYER QUEUE 
 
-### 2024-01-11 -
+**40 minutes**: 
+
+### 2024-01-10 - Working on DISPLAYING CARDS
+
+**40 minutes:**
+
+### 2024-01-13 - Once again working on PLAYER QUEUE
