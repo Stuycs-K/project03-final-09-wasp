@@ -1,7 +1,34 @@
 #include "bridge.h"
 
+int playerCount = 0; // global otherwise everything is gonna be a mess
+int sem_id;
+
 int main(){
   return 0;
+}
+
+int setup_semaphore(){
+  sem_id = semget(SEMKEY, IPC_CREAT, 0777);
+  if(sem_id == -1){
+    perror("setting up semaphore is not working...");
+    exit(1);
+  }
+
+  semctl(sem_id, 0, SETVAL, 0);
+}
+
+void semSignal(){
+  struct sembuf sb = {0, val, 0};
+  semop(sem_id, &sb, 1);
+}
+
+void semWait(){
+  struct sembuf sb = {0, -1, 0};
+  semop(sem_id, &sb, 1);
+}
+
+void game(){
+  return;
 }
 
 // We will store a semaphore in shared memory so that
