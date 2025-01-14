@@ -16,12 +16,13 @@
 #include<unistd.h>
 
 #define NUM_PLAYERS 4
-#define SEM_NAME "/game_semaphore"
+#define PIPE_NAME "/tmp/game_pipe"
+#define SEMKEY 5842
 #define SHAREDKEY "/game_pipe"
 #define BUFFER 1024
 
-int game();
+/*int game();
 int jQueue();
-int playerRandomization();
+int playerRandomization();*/
 
 #endif

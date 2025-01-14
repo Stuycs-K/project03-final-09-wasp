@@ -1,5 +1,9 @@
 #include "bridge.h"
 
+int main(){
+  return 0;
+}
+
 // We will store a semaphore in shared memory so that
 // it can be accessed by parent and children processes.
 /*typedef struct {
@@ -117,7 +121,7 @@ int main(void)
     return 0;
 }*/
 
-int main(){
+/*int main(){
 }
 
 int game(){
@@ -130,7 +134,7 @@ int jQueue(){
 
 int playerRandomization(){
   return 0;
-}
+}*/
 
 /*union semun {
   int val;                  //used for SETVAL
