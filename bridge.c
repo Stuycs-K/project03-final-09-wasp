@@ -10,7 +10,7 @@ int main(){
 int setup_semaphore(){
   sem_id = semget(SEMKEY, IPC_CREAT, 0777);
   if(sem_id == -1){
-    perror("setting up semaphore is not working...");
+    perror("setting up semaphore is not working... jenkies\n");
     exit(1);
   }
   semctl(sem_id, 0, SETVAL, 0);
@@ -28,7 +28,7 @@ void semWait(){
 
 void game(){
   printf("Number of players required: %d\n", NUM_PLAYERS);
-  // do something here
+  // do something here, probably the actual game logic
   return;
 }
 
@@ -43,7 +43,7 @@ void player(int read_fd){
     // something
   }
   else{
-    perror("Player joining failed");
+    perror("Player joining failed, nooooooooooo!\n");
   }
   return;
 }

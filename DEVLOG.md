@@ -27,3 +27,11 @@ This document must be updated daily by EACH group member.
 **40 minutes:**
 
 ### 2024-01-13 - Once again working on PLAYER QUEUE
+
+**40 minutes:**
+
+### 2024-01-14 - Working on PLAYER (includes queue) and GAME LOGIC
+
+**40 minutes:**
+
+**[] minutes:**
