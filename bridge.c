@@ -13,11 +13,10 @@ int setup_semaphore(){
     perror("setting up semaphore is not working...");
     exit(1);
   }
-
   semctl(sem_id, 0, SETVAL, 0);
 }
 
-void semSignal(){
+void semSignal(int val){
   struct sembuf sb = {0, val, 0};
   semop(sem_id, &sb, 1);
 }
@@ -28,6 +27,24 @@ void semWait(){
 }
 
 void game(){
+  printf("Number of players required: %d\n", NUM_PLAYERS);
+  // do something here
+  return;
+}
+
+void player(int read_fd){
+  char message[BUFFER];
+  int len; 
+
+  if((len = read(read_fd, message, sizeof(message)-1)) > 0){
+    message[len] = '\0';
+    printf("received message: %s\n", message);
+    semSignal(1);
+    // something
+  }
+  else{
+    perror("Player joining failed");
+  }
   return;
 }
 
