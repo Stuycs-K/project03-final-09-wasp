@@ -2,8 +2,39 @@
 
 int playerCount = 0; // global otherwise everything is gonna be a mess
 int sem_id;
+int shm; // I'm not actually sure if this is supposed to go up here or not so I'll look into it
+int phase = 0;
+
+// could have a signal identifier as well so that when someone does command c or something like that, there is a function always checking if the playerCount is 4, otherwise it needs to send a signal to cut out the function.
+
+//include structs here, which would definitely involve callocing/mallocing
 
 int main(){
+  setup_semaphore();
+
+  if(mkfifo(PIPE_NAME,0666) == -1){
+    perror("Setting up the pipe in main failed");
+  }
+
+  pid_t pid;
+  int playerPipes[NUM_PLAYERS][2];
+  int playerProcesses[NUM_PLAYERS];
+
+  printf("Server is running. Waiting for players...\n");
+
+  for(int i = 0; i < NUM_PLAYERS; i++){
+    if(pipe(playerPipes[NUM_PLAYERS][1]) == -1){
+      perror("Pipe creation failed D:\n");
+      exit(1);
+    } 
+    
+    if(pid == 0){
+      close(playerPipes[NUM_PLAYERS][1]);
+      char joinMessage[BUFFER];
+    }
+
+    // something
+  }
   return 0;
 }
 
@@ -29,6 +60,10 @@ void semWait(){
 void game(){
   printf("Number of players required: %d\n", NUM_PLAYERS);
   // do something here, probably the actual game logic
+  // make the dealing phase where everyone is basically assigned a role and a relative position (just go through an array with pids and keep modding it so it comes back to the start, that should work just fine
+  // divide it into the bidding phase and the other phases; perhaps make a phase global function, once 3 passes in a row it becomes the third phase
+  // the "number of players left" should be in some sort of print function by itself, and every time someone joins, this function can be called. This can also happen when somoene leaves though I might not be able to implement that in time. 
+  //
   return;
 }
 
@@ -48,8 +83,6 @@ void player(int read_fd){
   return;
 }
 
-// We will store a semaphore in shared memory so that
-// it can be accessed by parent and children processes.
 /*typedef struct {
     sem_t start_sem;   // Semaphore to signal that game can start
 } shared_data_t;
