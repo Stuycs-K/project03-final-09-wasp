@@ -5,6 +5,19 @@ int sem_id;
 int shm; // I'm not actually sure if this is supposed to go up here or not so I'll look into it
 int phase = 0;
 
+/*struct player{
+}*/
+// not sure if I need this yet! presumably I do though
+// this would also be good for the memory allocation
+
+
+/* printf("Welcome to Phase 1: The Bidding Phase. (include a description here)")
+ * printf("And now, begin Phase 2: The Game Phase. (include a description here)")
+ * printf("GAME OVER. Winner is: "); the thing is probably going to quit here because there's no way I have time to do anything more. 
+ *
+ * */
+
+
 // could have a signal identifier as well so that when someone does command c or something like that, there is a function always checking if the playerCount is 4, otherwise it needs to send a signal to cut out the function.
 
 //include structs here, which would definitely involve callocing/mallocing
@@ -31,6 +44,9 @@ int main(){
     if(pid == 0){
       close(playerPipes[NUM_PLAYERS][1]);
       char joinMessage[BUFFER];
+      snprintf(joinMessage, "player %d has joined\n", i);
+
+
     }
 
     // something
