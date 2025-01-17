@@ -110,9 +110,11 @@ void player(int read_fd){
     }
     else{
       // don't have to change points here!
-      pass();
+      pass(); // same as before perhaps
     }
-    // something
+    // make sure points are seen by all processes updating at the end of the game
+    //
+    // CAN DO A VERY SIMILAR THING AS LAST LINE; since only really the last one matters (or maybe not necessarily the last line, just the highest value) (since everything goes clockwise anyway) 
   }
   else{
     perror("Player joining failed, nooooooooooo!\n");
