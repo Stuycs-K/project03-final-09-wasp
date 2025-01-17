@@ -21,6 +21,8 @@ int phase = 0;
 // could have a signal identifier as well so that when someone does command c or something like that, there is a function always checking if the playerCount is 4, otherwise it needs to send a signal to cut out the function.
 
 //include structs here, which would definitely involve callocing/mallocing
+//
+// also, by checking pid, we can type messages like "wait for your turn" or something like that (perhaps while the semaphore is down AND something is typed into the message?
 
 int main(){
   setup_semaphore();
@@ -33,7 +35,7 @@ int main(){
   int playerPipes[NUM_PLAYERS][2];
   int playerProcesses[NUM_PLAYERS];
 
-  printf("Server is running. Waiting for players...\n");
+  printf("Server is running. Waiting for players...\n"); // add something about how many players are remaining here
 
   for(int i = 0; i < NUM_PLAYERS; i++){
     if(pipe(playerPipes[NUM_PLAYERS][1]) == -1){
@@ -45,8 +47,7 @@ int main(){
       close(playerPipes[NUM_PLAYERS][1]);
       char joinMessage[BUFFER];
       snprintf(joinMessage, "player %d has joined\n", i);
-
-
+      printf("testing here to make sure function works\n");
     }
 
     // something
@@ -62,6 +63,17 @@ int setup_semaphore(){
   }
   semctl(sem_id, 0, SETVAL, 0);
 }
+
+// perhaps make a card struct
+
+// see if the signal is working in general
+//
+
+//void sighandler(int signo){
+//  if(signo == SIGQUIT){
+//    printf("You have quit the game!"); // also make it so that everyone else gets a similar message, so depending on pid possibly
+//  }
+//}
 
 void semSignal(int val){
   struct sembuf sb = {0, val, 0};
@@ -91,6 +103,15 @@ void player(int read_fd){
     message[len] = '\0';
     printf("received message: %s\n", message);
     semSignal(1);
+
+    if(cardValue(playerCard) > cardValue(topCard)){
+      points++;
+      pass(); //but perhaps also might have to change it to not just pass so that we can actually see other player's cards
+    }
+    else{
+      // don't have to change points here!
+      pass();
+    }
     // something
   }
   else{

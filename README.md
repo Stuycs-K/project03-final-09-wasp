@@ -3,7 +3,7 @@
 
 ### Hive Mind
 
-Patrick Was
+Patrick Was [19]
        
 ### Project Description:
 
@@ -24,6 +24,8 @@ Introducing, Bridge: a 2v2 card game that might require a few playthroughs to fu
 Each player receives an equal number of cards (so, 13) from the dealer, which is a randomized individual from the group of 4. There is then a set order: the dealer appears on top, and everyone else is considered next in line clockwise. 
 
 If everyone passes in the first rotation, the next (clockwise; in this case, decided by join date[?]) dealer will deal out a new hand. A rotation ends when 3 successive players declare a pass. 
+
+Group ID Number: 19
 
 **Compiling:**
 
