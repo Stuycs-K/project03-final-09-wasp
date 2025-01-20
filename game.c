@@ -31,8 +31,8 @@ void semUp(int sem_id){
   semop(sem_id, &sb, 1);
 }
 
-int main(){
-  int shm_id = shmget(SHMKEY, sizeof(int), IPC_CREAT | 0666);
+int main(int argc, char** argv){
+  int shm_id = shmget(SHMKEY, 1024, IPC_CREAT | 0666);
   if(shm_id < 0){
     perror("shmget failing in game main\n");
     exit(1);
@@ -43,6 +43,7 @@ int main(){
     exit(1);
   }
   *shmp = 0;
+  *(shmp+1) = 0;
 
   int sem_id = semget(SEMKEY, 1, IPC_CREAT | 0666);
   if(sem_id == -1){
@@ -54,6 +55,18 @@ int main(){
   }
   // assuming that if I change the 0 here, the order will change as well? Which might we what we want.
   // also, something like GETPID would be nice to use as well. 
+  
+  if(argc > 1){
+    if(shmdt(shmp) == -1){
+      perror("shmdt failed in game main\n");
+      exit(1);
+    }
+
+    if(shmctl(shm_id, IPC_RMID, NULL) == -1){
+      perror("shmctl failed in game main\n");
+      exit(1);
+    }
+  }
   return 0;
 }
 

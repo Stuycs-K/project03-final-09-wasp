@@ -29,8 +29,17 @@ void semUp(int sem_id){
   semop(sem_id, &sb, 1);
 }
 
+static void sighandler(int signo){
+  if(signo == SIGINT){
+    printf("\nYou quit the game!\n");
+    exit(0);
+  }
+}
+
 int main(){
-  int shm_id = shmget(SHMKEY, sizeof(int), 0666);
+  signal(SIGINT, sighandler);
+
+  int shm_id = shmget(SHMKEY, 1024, 0666);
   if(shm_id < 0){
     perror("shmget failed in player main\n");
     exit(1);
@@ -41,16 +50,26 @@ int main(){
     exit(1);
   }
 
+  //allocating memory pointers here
+  int* playerNum;
+  int* prevNum;
+  playerNum = shmp;
+  prevNum = shmp+1;
+
+  // player's number is put into shared memory
+  *playerNum+=1;
+  printf("Your player number is: %d\n", *playerNum);
+
   int sem_id = semget(SEMKEY, 1, 0666);
   if(sem_id == -1){
     perror("semget failed in player main\n");
     exit(1);
   }
-  
+
   semDown(sem_id);
 
-  if(*shmp != 0){
-    printf("previous player's line: %d\n", *shmp);
+  if(*prevNum != 0){
+    printf("previous player's line: %d\n", *prevNum);
   }
 
   char buffer[1024];
@@ -65,7 +84,7 @@ int main(){
   int value = atoi(buffer);
   printf("testing to make sure it convers to integer: %d\n", value);
 
-  *shmp = value;
+  *prevNum = value;
 
   semUp(sem_id);
 
