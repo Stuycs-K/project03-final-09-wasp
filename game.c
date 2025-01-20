@@ -44,6 +44,7 @@ int main(int argc, char** argv){
   }
   *shmp = 0;
   *(shmp+1) = 0;
+  *(shmp+2) = 0;
 
   int sem_id = semget(SEMKEY, 1, IPC_CREAT | 0666);
   if(sem_id == -1){

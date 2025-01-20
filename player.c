@@ -53,8 +53,16 @@ int main(){
   //allocating memory pointers here
   int* playerNumP;
   int* prevNum;
+  int* currPlayer;
   playerNumP = shmp;
   prevNum = shmp+1;
+  currPlayer = shmp+2; // put the current player in shared memory; this will go in a loop somewhere.
+  
+  // telling player how many more players are required.
+  while(*playerNumP < MAX_PLAYERS || *playerNumP > MAX_PLAYERS){
+    printf("You need %d more players!\n", MAX_PLAYERS - *playerNumP);
+    sleep(5);
+  }
 
   // player's number is put into shared memory. Also creates another variable that doesn't change/is unique to this person.
   *playerNumP+=1;
