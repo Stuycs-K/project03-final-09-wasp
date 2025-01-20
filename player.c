@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 
 #define SEMKEY 5489
+#define SHMKEY 5839
+#define MAX_PLAYERS 4
 
 void semDown(int sem_id){
   struct sembuf sb;
@@ -28,6 +30,17 @@ void semUp(int sem_id){
 }
 
 int main(){
+  int shm_id = shmget(SHMKEY, sizeof(int), 0666);
+  if(shm_id < 0){
+    perror("shmget failed in player main\n");
+    exit(1);
+  }
+  int* shmp = (int*)shmat(shm_id, NULL, 0);
+  if(shmp == (int*)-1){
+    perror("shmat failed in player main\n");
+    exit(1);
+  }
+
   int sem_id = semget(SEMKEY, 1, 0666);
   if(sem_id == -1){
     perror("semget failed in player main\n");
@@ -36,13 +49,23 @@ int main(){
   
   semDown(sem_id);
 
+  if(*shmp != 0){
+    printf("previous player's line: %d\n", *shmp);
+  }
+
   char buffer[1024];
+  printf("any buffer contents: %s\n", buffer);
   if(fgets(buffer, sizeof(buffer), stdin) != NULL){
     printf("Player string: %s\n", buffer);
   }
   else{
     printf("Error reading input\n");
   }
+
+  int value = atoi(buffer);
+  printf("testing to make sure it convers to integer: %d\n", value);
+
+  *shmp = value;
 
   semUp(sem_id);
 

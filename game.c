@@ -12,6 +12,8 @@
 //#include <semaphore.h> //consider using this one instead, since it's 
 
 #define SEMKEY 5489
+#define SHMKEY 5839
+#define MAX_PLAYERS 4
 
 void semDown(int sem_id){
   struct sembuf sb;
@@ -30,6 +32,18 @@ void semUp(int sem_id){
 }
 
 int main(){
+  int shm_id = shmget(SHMKEY, sizeof(int), IPC_CREAT | 0666);
+  if(shm_id < 0){
+    perror("shmget failing in game main\n");
+    exit(1);
+  }
+  int* shmp = (int*)shmat(shm_id, NULL, 0);
+  if(shmp == (int*)-1){
+    perror("shmat failing in game main\n");
+    exit(1);
+  }
+  *shmp = 0;
+
   int sem_id = semget(SEMKEY, 1, IPC_CREAT | 0666);
   if(sem_id == -1){
     perror("semget failed in game main\n");
