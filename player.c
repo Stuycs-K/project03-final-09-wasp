@@ -51,14 +51,15 @@ int main(){
   }
 
   //allocating memory pointers here
-  int* playerNum;
+  int* playerNumP;
   int* prevNum;
-  playerNum = shmp;
+  playerNumP = shmp;
   prevNum = shmp+1;
 
-  // player's number is put into shared memory
-  *playerNum+=1;
-  printf("Your player number is: %d\n", *playerNum);
+  // player's number is put into shared memory. Also creates another variable that doesn't change/is unique to this person.
+  *playerNumP+=1;
+  int playerNum = *playerNumP;
+  printf("Your player number is: %d\n", playerNum);
 
   int sem_id = semget(SEMKEY, 1, 0666);
   if(sem_id == -1){
