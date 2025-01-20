@@ -46,7 +46,7 @@ int main(int argc, char** argv){
   *(shmp+1) = 0;
   *(shmp+2) = 0;
 
-  int sem_id = semget(SEMKEY, 1, IPC_CREAT | 0666);
+  int sem_id = semget(SEMKEY, NUM_PLAYERS, IPC_CREAT | 0666);
   if(sem_id == -1){
     perror("semget failed in game main\n");
     exit(1);

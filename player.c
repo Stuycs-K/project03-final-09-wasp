@@ -13,6 +13,8 @@
 #define SHMKEY 5839
 #define MAX_PLAYERS 4
 
+int playerNum;
+
 void semDown(int sem_id){
   struct sembuf sb;
   sb.sem_num = 0;
@@ -58,15 +60,16 @@ int main(){
   prevNum = shmp+1;
   currPlayer = shmp+2; // put the current player in shared memory; this will go in a loop somewhere.
   
+  // player's number is put into shared memory. Also creates another variable that doesn't change/is unique to this person.
+  *playerNumP+=1;
+  playerNum = *playerNumP;
+
   // telling player how many more players are required.
   while(*playerNumP < MAX_PLAYERS || *playerNumP > MAX_PLAYERS){
     printf("You need %d more players!\n", MAX_PLAYERS - *playerNumP);
     sleep(5);
   }
 
-  // player's number is put into shared memory. Also creates another variable that doesn't change/is unique to this person.
-  *playerNumP+=1;
-  int playerNum = *playerNumP;
   printf("Your player number is: %d\n", playerNum);
 
   int sem_id = semget(SEMKEY, 1, 0666);
@@ -82,7 +85,6 @@ int main(){
   }
 
   char buffer[1024];
-  printf("any buffer contents: %s\n", buffer);
   if(fgets(buffer, sizeof(buffer), stdin) != NULL){
     printf("Player string: %s\n", buffer);
   }
