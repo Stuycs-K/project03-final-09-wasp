@@ -17,7 +17,7 @@ int playerNum;
 
 void semDown(int sem_id){
   struct sembuf sb;
-  sb.sem_num = 0;
+  sb.sem_num = playerNum;
   sb.sem_op = -1;
   sb.sem_flg = 0;
   semop(sem_id, &sb, 1);
@@ -25,7 +25,7 @@ void semDown(int sem_id){
 
 void semUp(int sem_id){
   struct sembuf sb;
-  sb.sem_num = 0;
+  sb.sem_num = (playerNum+1) % MAX_PLAYERS;
   sb.sem_op = 1;
   sb.sem_flg = 0;
   semop(sem_id, &sb, 1);
@@ -78,26 +78,35 @@ int main(){
     exit(1);
   }
 
-  semDown(sem_id);
+while(1){
+    semDown(sem_id);
 
-  if(*prevNum != 0){
-    printf("previous player's line: %d\n", *prevNum);
+    if(*currPlayer == playerNum-1){ //because playerNumbers start indexing at 1
+
+      printf("It's your turn!\n");
+
+      if(*prevNum != 0){
+        printf("previous player's line: %d\n", *prevNum);
+      }
+
+      char buffer[1024];
+      if(fgets(buffer, sizeof(buffer), stdin) != NULL){
+        printf("Player string: %s\n", buffer);
+      }
+      else{
+      printf("Error reading input\n");
+      }
+
+      int value = atoi(buffer);
+      printf("testing to make sure it convers to integer: %d\n", value);
+
+      *prevNum = value;
+
+      *currPlayer = (*currPlayer + 1) % MAX_PLAYERS;
+
+      semUp(sem_id);
+    }
   }
-
-  char buffer[1024];
-  if(fgets(buffer, sizeof(buffer), stdin) != NULL){
-    printf("Player string: %s\n", buffer);
-  }
-  else{
-    printf("Error reading input\n");
-  }
-
-  int value = atoi(buffer);
-  printf("testing to make sure it convers to integer: %d\n", value);
-
-  *prevNum = value;
-
-  semUp(sem_id);
 
   return 0;
 }
