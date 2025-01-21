@@ -5,9 +5,9 @@ game.o: game.c
 	gcc -c game.c
 player.o: player.c
 	gcc -c player.c
-games:
+games: game
 	./game
-play:
+play: player
 	./player
 clean:
 	rm -f *.o
