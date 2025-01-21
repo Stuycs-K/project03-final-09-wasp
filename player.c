@@ -160,10 +160,6 @@ int main(){
     strcpy(hand[i], temp_lines[13 * (playerNum-1) + i]);
   }
 
-  for(int i = 0; i < 13; i++){
-    printf("Line %d: %s", i+1, hand[i]);
-  }
-
   free(temp_lines);
 
   // telling player how many more players are required.
@@ -181,12 +177,19 @@ int main(){
     exit(1);
   }
 
-  while(*playerNumP == MAX_PLAYERS){
+  int roundCount = 0;
+
+  while(*playerNumP == MAX_PLAYERS && roundCount < 2){
     semDown(sem_id);
 
     if(*currPlayer == playerNum-1){ //because playerNumbers start indexing at 1
 
       printf("It's your turn!\n");
+      printf("Your hand is: \t");
+      for(int i = 0; i < 13; i++){
+        printf("%s\t", hand[i]);
+      }
+      printf("\n");
 
       // opening the file
       FILE *file = fopen("gameProgress.txt", "a+");
@@ -197,8 +200,6 @@ int main(){
 
       int size = *prevCard;
 
-      printf("value of size: %d\n", size);
-
       fseek(file, size-3, SEEK_SET);
       char lastCard[256];
       if(size > 0){
@@ -206,13 +207,14 @@ int main(){
         printf("previous player's card: %s\n", lastCard);
       }
       else{
-        printf("You are the first person to place a card\n");
+        printf("You are the first person to place a card this round!\n");
       }
 
 
       char newCard[1024];
+      printf("Enter your string here: ");
       if(fgets(newCard, sizeof(newCard), stdin) != NULL){
-        printf("Player string: %s\n", newCard);
+        printf("The card you placed: %s\n", newCard);
       }
       else{
       printf("Error reading input\n");
@@ -224,6 +226,9 @@ int main(){
       fclose(file);
 
       *currPlayer = (*currPlayer + 1) % MAX_PLAYERS;
+      if(*playerNumP == 4){
+        roundCount++;
+      }
 
       semUp(sem_id);
     }
