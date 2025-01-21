@@ -61,6 +61,8 @@ int cardValue(char* card){
   return value;
 }
 
+
+
 static void sighandler(int signo){
   if(signo == SIGINT){
     printf("\nYou quit the game!\n");
