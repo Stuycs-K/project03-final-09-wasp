@@ -13,6 +13,7 @@
 #define SHMKEY 5839
 #define MAX_PLAYERS 4
 
+int* playerNumP;
 int playerNum;
 
 void semDown(int sem_id){
@@ -31,15 +32,25 @@ void semUp(int sem_id){
   semop(sem_id, &sb, 1);
 }
 
+int cardValue(char* card){
+  if(strcmp(card, "A") == 0){
+    return 1000;
+  }
+  return 0;
+}
+
 static void sighandler(int signo){
   if(signo == SIGINT){
     printf("\nYou quit the game!\n");
+    *playerNumP-=1;
     exit(0);
   }
 }
 
 int main(){
   signal(SIGINT, sighandler);
+
+  printf("card value of A: %d\n", cardValue("A"));
 
   int shm_id = shmget(SHMKEY, 1024, 0666);
   if(shm_id < 0){
@@ -53,7 +64,6 @@ int main(){
   }
 
   //allocating memory pointers here
-  int* playerNumP;
   int* prevNum;
   int* currPlayer;
   playerNumP = shmp;
@@ -78,7 +88,7 @@ int main(){
     exit(1);
   }
 
-while(1){
+while(*playerNumP == MAX_PLAYERS){
     semDown(sem_id);
 
     if(*currPlayer == playerNum-1){ //because playerNumbers start indexing at 1
@@ -106,7 +116,13 @@ while(1){
 
       semUp(sem_id);
     }
+    else{
+      printf("It is player %d's turn! Hopefully, they don't take more than 5 seconds to make their turn...\n", *currPlayer + 1);
+      sleep(5);
+    }
   }
+
+  printf("Someone either left or there's too many players! Start everything over >:(\n");
 
   return 0;
 }
