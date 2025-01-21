@@ -45,8 +45,9 @@ int main(int argc, char** argv){
   *shmp = 0;
   *(shmp+1) = 0;
   *(shmp+2) = 0;
+  *(shmp+3) = 0;
 
-  int sem_id = semget(SEMKEY, NUM_PLAYERS, IPC_CREAT | 0666);
+  int sem_id = semget(SEMKEY, 1, IPC_CREAT | 0666);
   if(sem_id == -1){
     perror("semget failed in game main\n");
     exit(1);
@@ -56,6 +57,14 @@ int main(int argc, char** argv){
   }
   // assuming that if I change the 0 here, the order will change as well? Which might we what we want.
   // also, something like GETPID would be nice to use as well. 
+
+  int fd = open("gameProgress.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+  if(fd < 0){
+    perror("File failed to generate in game main\n");
+    exit(1);
+  }
+
+  close(fd);
   
   if(argc > 1){
     if(shmdt(shmp) == -1){

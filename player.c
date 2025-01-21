@@ -33,10 +33,31 @@ void semUp(int sem_id){
 }
 
 int cardValue(char* card){
-  if(card[1] == 'A'){
-    return 1000;
+  if(strlen(card) != 2){
+    printf("Please input a valid card next time\n");
+    return 0;
   }
-  return 0;
+  if(card[1] == '1'){
+    printf("Dawg, this is an invalid card\n");
+  }
+  if(card[1] == 'A'){
+    return 10000;
+  }
+  int value = 0;
+  value += 10 * card[0];
+  if(card[1] == 'J'){
+    value += 11;
+  }
+  else if(card[1] == 'K'){
+    value += 12;
+  }
+  else if(card[1] == 'Q'){
+    value += 13;
+  }
+  else{
+    value += card[1] - '0';
+  }
+  return value;
 }
 
 static void sighandler(int signo){
@@ -50,8 +71,6 @@ static void sighandler(int signo){
 int main(){
   signal(SIGINT, sighandler);
 
-  printf("card value of A: %d\n", cardValue("HA"));
-
   int shm_id = shmget(SHMKEY, 1024, 0666);
   if(shm_id < 0){
     perror("shmget failed in player main\n");
@@ -60,6 +79,16 @@ int main(){
   int* shmp = (int*)shmat(shm_id, NULL, 0);
   if(shmp == (int*)-1){
     perror("shmat failed in player main\n");
+    exit(1);
+  }
+
+  // pointer here for what the previous card was
+  int* prevCard;
+  prevCard = shmp+3;
+
+  FILE *file = fopen("gameProgress.txt", "a+");
+  if(file == NULL){
+    perror("fopen failed in player main\n");
     exit(1);
   }
 
@@ -83,34 +112,53 @@ int main(){
   printf("Your player number is: %d\n", playerNum);
 
   int sem_id = semget(SEMKEY, 1, 0666);
+  //int sem_id = semget(SEMKEY, 0, 0);
   if(sem_id == -1){
     perror("semget failed in player main\n");
     exit(1);
   }
 
-while(*playerNumP == MAX_PLAYERS){
+  while(*playerNumP == MAX_PLAYERS){
     semDown(sem_id);
 
     if(*currPlayer == playerNum-1){ //because playerNumbers start indexing at 1
 
       printf("It's your turn!\n");
 
-      if(*prevNum != 0){
-        printf("previous player's line: %d\n", *prevNum);
+      // opening the file
+      FILE *file = fopen("gameProgress.txt", "a+");
+      if(file == NULL){
+        perror("fopen failed in player main\n");
+        exit(1);
       }
 
-      char buffer[1024];
-      if(fgets(buffer, sizeof(buffer), stdin) != NULL){
-        printf("Player string: %s\n", buffer);
+      int size = *prevCard;
+
+      printf("value of size: %d\n", size);
+
+      fseek(file, size-3, SEEK_SET);
+      char lastCard[256];
+      if(size > 0){
+        fgets(lastCard, sizeof(lastCard), file);
+        printf("previous player's card: %s\n", lastCard);
+      }
+      else{
+        printf("You are the first person to place a card\n");
+      }
+
+
+      char newCard[1024];
+      if(fgets(newCard, sizeof(newCard), stdin) != NULL){
+        printf("Player string: %s\n", newCard);
       }
       else{
       printf("Error reading input\n");
       }
 
-      int value = atoi(buffer);
-      printf("testing to make sure it convers to integer: %d\n", value);
+      fputs(newCard, file);
+      *prevCard = ftell(file);
 
-      *prevNum = value;
+      fclose(file);
 
       *currPlayer = (*currPlayer + 1) % MAX_PLAYERS;
 
