@@ -8,6 +8,7 @@
 #include <sys/sem.h>
 #include <sys/shm.h>
 #include <sys/stat.h>
+#include <time.h>
 
 #define SEMKEY 5489
 #define SHMKEY 5839
@@ -68,6 +69,37 @@ static void sighandler(int signo){
   }
 }
 
+int readLines(char*** lines){
+  char buffer[256];
+  int i = 0;
+  FILE *file = fopen("shuffledArray.txt", "r");
+  if(file == NULL){
+    perror("unable to open file\n");
+    exit(1);
+  }
+  
+  *lines = malloc(sizeof(char*) * 52);
+  if(*lines == NULL){
+    perror("Memory allocation for lines failed\n");
+    fclose(file);
+    exit(1);
+  }
+
+  while(fgets(buffer, 256, file) != NULL){
+    (*lines)[i] = malloc(strlen(buffer)+1);
+    if((*lines)[i] == NULL){
+      perror("Memory allocation failed for lines\n");
+      fclose(file);
+      exit(1);
+    }
+    strcpy((*lines)[i], buffer);
+    i++;
+  }
+
+  fclose(file);
+  return i;
+}
+
 int main(){
   signal(SIGINT, sighandler);
 
@@ -98,10 +130,41 @@ int main(){
   playerNumP = shmp;
   prevNum = shmp+1;
   currPlayer = shmp+2; // put the current player in shared memory; this will go in a loop somewhere.
+  int* p1score; p1score = shmp+4;
+  int* p2score; p1score = shmp+5;
+  int* p3score; p1score = shmp+6;
+  int* p4score; p1score = shmp+7;
+  int* currWinner; currWinner = shmp+8;
   
   // player's number is put into shared memory. Also creates another variable that doesn't change/is unique to this person.
   *playerNumP+=1;
   playerNum = *playerNumP;
+
+  // here, we decide which part of the array is going to be for this particular person.
+
+  char** temp_lines;
+  int num_lines = readLines(&temp_lines);
+  if(num_lines < 0){
+    printf("Failed to read file\n");
+    exit(1);
+  }
+
+  /*for(int i = 0; i < num_lines; i++){
+    printf("Line %d: %s", i+1, temp_lines[i]);
+    free(temp_lines[i]);
+  }*/
+
+  char* hand[13];
+  for(int i = 0; i < 13; i++){
+    hand[i] = malloc(strlen(temp_lines[13 * (playerNum-1) + i])+1);
+    strcpy(hand[i], temp_lines[13 * (playerNum-1) + i]);
+  }
+
+  for(int i = 0; i < 13; i++){
+    printf("Line %d: %s", i+1, hand[i]);
+  }
+
+  free(temp_lines);
 
   // telling player how many more players are required.
   while(*playerNumP < MAX_PLAYERS || *playerNumP > MAX_PLAYERS){

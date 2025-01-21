@@ -9,7 +9,7 @@
 #include <sys/shm.h>
 #include <errno.h>
 #include <sys/stat.h>
-//#include <semaphore.h> //consider using this one instead, since it's 
+#include <time.h>
 
 #define SEMKEY 5489
 #define SHMKEY 5839
@@ -31,6 +31,19 @@ void semUp(int sem_id){
   semop(sem_id, &sb, 1);
 }
 
+void shuffleStrings(char* arr[], int n){
+  srand(time(NULL));
+
+  for(int i = n-1; i > 0; i--){
+    int j = rand() % (i+1);
+
+    char* temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+}
+
+
 int main(int argc, char** argv){
   int shm_id = shmget(SHMKEY, 1024, IPC_CREAT | 0666);
   if(shm_id < 0){
@@ -46,6 +59,12 @@ int main(int argc, char** argv){
   *(shmp+1) = 0;
   *(shmp+2) = 0;
   *(shmp+3) = 0;
+  *(shmp+4) = 0;
+  *(shmp+5) = 0;
+  *(shmp+6) = 0;
+  *(shmp+7) = 0;
+  *(shmp+8) = 1;
+
 
   int sem_id = semget(SEMKEY, 1, IPC_CREAT | 0666);
   if(sem_id == -1){
@@ -55,16 +74,35 @@ int main(int argc, char** argv){
   if(semctl(sem_id, 0, SETVAL, 1) == -1){
     perror("semctl failed in game main\n");
   }
-  // assuming that if I change the 0 here, the order will change as well? Which might we what we want.
-  // also, something like GETPID would be nice to use as well. 
 
   int fd = open("gameProgress.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
   if(fd < 0){
     perror("File failed to generate in game main\n");
     exit(1);
   }
-
   close(fd);
+
+
+  char* arr[] = {"C2\n", "C3\n", "C4\n", "C5\n", "C6\n", "C7\n", "C8\n", "C9\n", "C10\n", "CJ\n", "CQ\n", "CK\n", "CA\n", 
+    "D2\n", "D3\n", "D4\n", "D5\n", "D6\n", "D7\n", "D8\n", "D9\n", "D10\n", "DJ\n", "DQ\n", "DK\n", "DA\n",
+    "H2\n", "H3\n", "H4\n", "H5\n", "H6\n", "H7\n", "H8\n", "H9\n", "H10\n", "HJ\n", "HQ\n", "HK\n", "HA\n",
+    "S2\n", "S3\n", "S4\n", "S5\n", "S6\n", "S7\n", "S8\n", "S9\n", "S10\n", "SJ\n", "SQ\n", "SK\n", "SA\n"};
+  int n = sizeof(arr)/sizeof(arr[0]);
+  shuffleStrings(arr, n);
+
+  int fd2 = open("shuffledArray.txt", O_RDWR | O_CREAT | O_TRUNC, 0666);
+  if(fd2 < 0){
+    perror("File 2 failed to generate in game main\n");
+    exit(1);
+  }
+  for(int i = 0; i < n; i++){
+    if(write(fd2, arr[i], strlen(arr[i])) == -1){
+      perror("Error writing to fd2\n");
+      close(fd2);
+      exit(1);
+    }
+  }
+  close(fd2);
   
   if(argc > 1){
     if(shmdt(shmp) == -1){
