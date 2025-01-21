@@ -34,18 +34,15 @@ void semUp(int sem_id){
 }
 
 int cardValue(char* card){
-  if(strlen(card) != 2){
-    printf("Please input a valid card next time\n");
-    return 0;
-  }
-  if(card[1] == '1'){
-    printf("Dawg, this is an invalid card\n");
-  }
+  card[strcspn(card, "\n")]=0;
   if(card[1] == 'A'){
     return 10000;
   }
   int value = 0;
   value += 10 * card[0];
+  if(card[1] == '1'){
+    value += 10;
+  }
   if(card[1] == 'J'){
     value += 11;
   }
@@ -181,7 +178,7 @@ int main(){
 
   int roundCount = 0;
 
-  while(*playerNumP == MAX_PLAYERS && roundCount < 2){
+  while(*playerNumP == MAX_PLAYERS && roundCount < 3){
     semDown(sem_id);
 
     if(*currPlayer == playerNum-1){ //because playerNumbers start indexing at 1
@@ -206,11 +203,12 @@ int main(){
       char lastCard[256];
       if(size > 0){
         fgets(lastCard, sizeof(lastCard), file);
-        printf("previous player's card: %s\n", lastCard);
+        printf("previous player's card: %s", lastCard);
       }
       else{
         printf("You are the first person to place a card this round!\n");
       }
+      lastCard[strcspn(lastCard, "\n")] = 0; 
 
 
       char newCard[1024];
@@ -227,8 +225,21 @@ int main(){
 
       fclose(file);
 
+      // putting the scores into their respective memories.
       *currPlayer = (*currPlayer + 1) % MAX_PLAYERS;
-      if(*playerNumP == 4){
+      if(*currPlayer == 1 && roundCount > 0){
+        *(shmp + 3 + *currWinner) += 1;
+        printf("Winner of trick one: %d, points: %d\n\n", *currWinner, *(shmp + 3 + *currWinner));
+      }
+
+      // comparing the two cards
+      if(size > 0){
+        if(cardValue(newCard) > cardValue(lastCard)){
+          *currWinner = playerNum;
+        }
+      }
+
+      if(*currPlayer == 4){
         roundCount++;
       }
 
