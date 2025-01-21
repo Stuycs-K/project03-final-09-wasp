@@ -21,4 +21,5 @@ The suites are in order alphabetically (so clubs are weakest). Other standard ru
 
 **Compiling:** Before joining the game, at least one person must run "make games", which will compile and run ./game. This sets up many useful things, like files, shared memory, and semaphores. Once this has been run, every player may then run "make player", and they will join the player queue. Everything after that is rather self-explanatory, since all that is really required of the player is to type a card that is in the hand. 
 
+**BUGS:**
 

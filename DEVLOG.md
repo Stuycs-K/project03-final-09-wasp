@@ -1,6 +1,6 @@
 # Dev Log:
 
-This document must be updated daily by EACH group member.
+This document must be updated daily by EACH group member... even if there is only 1.
 
 ## Patrick Was
 
@@ -20,34 +20,42 @@ This document must be updated daily by EACH group member.
 
 ### 2025-01-09 - Working on PLAYER QUEUE 
 
-**40 minutes**: 
+**40 minutes**: Implemented the semahpores that are going to be used for player queue. Seems to work for 2 players, but not really for 4. 
 
-### 2025-01-10 - Working on DISPLAYING CARDS
+### 2025-01-10 - Working on DISPLAYING CARDS and CARD VALUE
 
-**40 minutes:**
+**40 minutes:** Worked on a card value function that returns some arbitrary (one that I assigned) numerical value to the cards. All that matters is that some cards are greater than others; their raw point values don't actually matter. 
 
 ### 2025-01-13 - Once again working on PLAYER QUEUE
 
-**40 minutes:**
+**40 minutes:** (Desparately) attempting to extend this player queue to that of 4 players. 
 
 ### 2025-01-14 - Working on PLAYER (includes queue) and GAME LOGIC
 
-**40 minutes:**
+**40 minutes:** Queue basically seems to work now, though I somehow broke it in the middle and had to refix it (though my refixing it was putting it into some prior state that I thought didn't work? Life sure is confusing). 
 
-**[] minutes:**
+**35 minutes:** Game logic such as comparison of cards and when that should actually take place. 
 
-### 2025-01-15 - 
+### 2025-01-15 - FLOWCHART, shared memory massacre
 
-### 2025-01-16 - 
+**40 minutes:** moving things to diffferent files, making more spots in shared memory for other things such as point values, current winner, etc. Shared memory saved my life. 
 
-moving things to diffferent files
+### 2025-01-17 - Crazy File Changes
 
-### 2025-01-17 -
+**60 minutes:** Turns out, some of those files I created may not be necessary after all. FLOWCHART.md seems rather redundant and unnecessary, especially since I know what I'm doing. Additionally, removed some unnecessary h files, like bridgeSemaphores.h or bridge.h. Replaced with game.c and player.c.
 
-### 2025-01-18 - 
+### 2025-01-18 - Handling
 
-### 2025-01-19 - 
+**50 minutes:** Like handling a baby, we want to be careful when handling these cards. Thus, a nice shuffle should happen in some text file, and then that text file can be read by each process (I do not want to go through the pain of putting arrays into shared memory. No thank you. This is okay). Also, made sure that each player gets exactly 13 cards. 
 
-### 2025-01-20 - Working on video
+### 2025-01-19 - Reinvestigation
 
-### 2025-01-21 - 
+**75 minutes:** Semaphores kind of just broke. I don't know why, but I managed to fix it again. 
+
+### 2025-01-20 - Bug Fixes
+
+**90 minutes:** Attempted to fix bugs regarding the lack of displaying of victors after tricks are over. What makes this weirder is that rounds to end properly.  
+
+### 2025-01-21 - Working on Video
+
+**30 minutes:** Getting final video for presentation.
