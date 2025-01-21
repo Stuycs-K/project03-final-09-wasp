@@ -11,6 +11,8 @@ Originally, I was going into this project expecting it to be a game of bridge--t
  
 ### Instructions:
 
+**Video:** https://drive.google.com/file/d/1qOJ3EonG7k80d06JS9IaQ5yuo6FbjiQc/view?usp=sharing
+
 **Vocabulary:** Fortunately, since the creation of this odd version of my game, the vocabulary list has DRASTICALLY decreased. As a matter of fact, there is only one word that is even relevant at this point: 
 
 - *Trick*: A round where each player takes turns placing a card on the table, and the card with the highest value (determined by rules of the game) wins.
@@ -22,4 +24,6 @@ The suites are in order alphabetically (so clubs are weakest). Other standard ru
 **Compiling:** Before joining the game, at least one person must run "make games", which will compile and run ./game. This sets up many useful things, like files, shared memory, and semaphores. Once this has been run, every player may then run "make player", and they will join the player queue. Everything after that is rather self-explanatory, since all that is really required of the player is to type a card that is in the hand. 
 
 **BUGS:**
+Final scores are not reported at the end of a trick.
+The stopping at 13 just so happened to not work anymore when I recorded my video.
 
