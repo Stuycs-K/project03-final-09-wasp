@@ -33,7 +33,7 @@ void semUp(int sem_id){
 }
 
 int cardValue(char* card){
-  if(strcmp(card, "A") == 0){
+  if(card[1] == 'A'){
     return 1000;
   }
   return 0;
@@ -50,7 +50,7 @@ static void sighandler(int signo){
 int main(){
   signal(SIGINT, sighandler);
 
-  printf("card value of A: %d\n", cardValue("A"));
+  printf("card value of A: %d\n", cardValue("HA"));
 
   int shm_id = shmget(SHMKEY, 1024, 0666);
   if(shm_id < 0){
